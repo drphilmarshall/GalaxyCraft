@@ -11,4 +11,3 @@ Contributors:
 
 **[Demo](http://drphilmarshall.github.io/GalaxyCraft/)**
 
-
