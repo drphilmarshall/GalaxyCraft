@@ -1,6 +1,8 @@
 GalaxyCraft
 ===========
 
+![]()
+
 Well-resolved images of galaxies (like
 [these](http://talk.galaxyzoo.org/#/collections/CGZL00003q) from Galaxy Zoo)
 contain a lot of "morphological" information that is currently not being
@@ -24,7 +26,8 @@ with a crafted model*, via some sort of big red "optimize" button.
 ### [Demo](http://drphilmarshall.github.io/GalaxyCraft/)
 
 * Textured galaxy model suggested by [Groeneboom & Dahle (2014)](https://github.com/drphilmarshall/GalaxyCraft/raw/master/doc/litter/GAMER_Groeneboom%2BDahle2014.pdf)
-* Galaxy ray-tracing devloped at [Shadertoy](https://www.shadertoy.com/view/4dSSWm) and [jsfiddle](http://jsfiddle.net/otaviogood/e1dr2rnr/6/)
+* Galaxy ray-tracing developed at [Shadertoy](https://www.shadertoy.com/view/4dSSWm)
+* Javascript hacked at [jsfiddle](http://jsfiddle.net/otaviogood/e1dr2rnr/7/)
 
 
 ### Contributors:
@@ -32,5 +35,6 @@ with a crafted model*, via some sort of big red "optimize" button.
 * Otavio Good
 * Phil Marshall
 * Carl Gorringe
+* Dave Johnson
 
 Science Hack Day, San Francisco, 2014.
