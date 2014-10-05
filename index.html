@@ -288,7 +288,7 @@ void main(void)
             density += DensitySpiralArms(pos, coverage);
             density += DensityDust(pos, coverage);
             //float currentCoverage = exp(-pow(distance(lastPos, pos) * min(density, lastDensity), 1.0));
-    inc = 0.2;//min(dist,0.2);
+    inc = max(0.03,pos.y*0.25);//min(dist,0.2);
             accum.xyz +=density.xyz*inc;// currentCoverage;
 
       t += inc;
