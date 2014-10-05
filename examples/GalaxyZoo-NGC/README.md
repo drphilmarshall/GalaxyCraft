@@ -1,6 +1,6 @@
 # NGC galaxies from Galaxy Zoo
 
-Check these out:
+From Brooke Simmons' [NGC collection at Galaxy Zoo](http://talk.galaxyzoo.org/#/collections/CGZL00003q):
 
 ![AGZ0003tyo.jpg](https://raw.githubusercontent.com/drphilmarshall/GalaxyCraft/master/examples/GalaxyZoo-NGC/AGZ0003tyo.jpg)
 ![AGZ00051ak.jpg](https://raw.githubusercontent.com/drphilmarshall/GalaxyCraft/master/examples/GalaxyZoo-NGC/AGZ00051ak.jpg)
@@ -11,7 +11,6 @@ Check these out:
 ![AGZ00022dy.jpg](https://raw.githubusercontent.com/drphilmarshall/GalaxyCraft/master/examples/GalaxyZoo-NGC/AGZ00022dy.jpg)
 ![AGZ0003zkl.jpg](https://raw.githubusercontent.com/drphilmarshall/GalaxyCraft/master/examples/GalaxyZoo-NGC/AGZ0003zkl.jpg)
 ![AGZ00033md.jpg](https://raw.githubusercontent.com/drphilmarshall/GalaxyCraft/master/examples/GalaxyZoo-NGC/AGZ00033md.jpg)
-
 
 Downloaded with:
 
