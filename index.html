@@ -20,7 +20,7 @@
     <script type="text/javascript">
 
 	var GalaxyControl = function() {
-	  this.message = 'something';
+	  this.message = 'Tweak the parameters';
     this.bulgeSize = 0.5;
 	  this.spiralyness = 0.5;
 	  this.displayOutline = false;
@@ -207,7 +207,7 @@ vec3 DensityBulge(vec3 p, inout float coverage)
 vec3 DensitySpiralArms(vec3 p, inout float coverage)
 {
     p.y *= 4.0;
-    //p.x *= squish;//1.7;
+    p.x *= 1.7;//squish;//1.7;
     float len = length(p * vec3(squish, 1.0,1.0))*0.5;
     float at = atan(p.x, p.z);
     at += len*8.0*spiralyness;
@@ -217,7 +217,7 @@ vec3 DensitySpiralArms(vec3 p, inout float coverage)
     float arm = saturate(sin(at*2.0)*0.25-0.09);
     final *= pow(arm, 2.5);
     //return exp(-pow(len, 0.25));
-    return (final) * coverage * vec3(0.1, 0.4, 1.0);
+    return (final) * coverage * vec3(0.2, 0.6, 1.0)*1.5;
 }
 
 vec3 DensityDust(vec3 p, inout float coverage)
