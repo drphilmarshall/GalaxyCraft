@@ -236,7 +236,7 @@ void main(void)
   // Camera lookat.
   vec3 camLookat=vec3(0,0.0,0); // vrp
 
-  float mx=-iMouse.x/iResolution.x*PI*2.5 + iGlobalTime * 0.5;
+  float mx=-iMouse.x/iResolution.x*PI*2.5;// + iGlobalTime * 0.5;
   float my=-(iMouse.y/iResolution.y*PI-(PI*0.5));// + sin(iGlobalTime * 0.3)*0.2+0.2;//*PI/2.01;
   vec3 camPos=vec3(cos(my)*cos(mx),sin(my),cos(my)*sin(mx))*(3.2);  // prp
   //vec3 camPos=vec3(cos(my),sin(my),cos(my))*(3.2);  // prp
