@@ -1,7 +1,7 @@
 GalaxyCraft
 ===========
 
-![]()
+![HD movies or 1940s cartoons?](https://github.com/drphilmarshall/GalaxyCraft/raw/master/images/pitch.jpg)
 
 Well-resolved images of galaxies (like
 [these](http://talk.galaxyzoo.org/#/collections/CGZL00003q) from Galaxy Zoo)
