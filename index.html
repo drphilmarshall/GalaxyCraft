@@ -16,6 +16,28 @@
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <script type="text/javascript" src="dat/dat.gui.min.js"></script>
+    <script type="text/javascript">
+
+	var GalaxyControl = function() {
+	  this.message = 'something';
+	  this.speed = 0.8;
+	  this.displayOutline = false;
+	};
+
+	window.onload = function() {
+	  var text = new GalaxyControl();
+	  var gui = new dat.GUI({ autoPlace:false });
+
+	  var guiContainer = document.getElementById('gui-container');
+	  guiContainer.appendChild(gui.domElement);
+
+	  gui.add(text, 'message');
+	  gui.add(text, 'speed', -5, 5);
+	  gui.add(text, 'displayOutline');
+	};
+
+    </script>
   </head>
   <body>
       <div id="header">
@@ -44,10 +66,14 @@
 
 	<table>
 	<tr>
-	 <td style="width:50%">
+	 <td style="width:45%">
 	  <img src="examples/GalaxyZoo-NGC/AGZ0003tyo.jpg" style="width-max:450px" />
 	 </td>
-	 <td style="width:50%">Right
+	 <td style="width:45%">
+	  
+	 </td>
+	 <td style="width:15%; vertical-align:text-top;">
+	  <div id="gui-container"></div>
 	 </td>
 	</tr>
 	</table>
