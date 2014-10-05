@@ -1,10 +1,10 @@
 GalaxyCraft
 ===========
 
-![]()
+![HD movies or 1940s cartoons?](https://github.com/drphilmarshall/GalaxyCraft/raw/master/images/pitch.jpg)
 
-Well-resolved images of galaxies (like
-[these](http://talk.galaxyzoo.org/#/collections/CGZL00003q) from Galaxy Zoo)
+Well-resolved images of galaxies (as seen at
+[Galaxy Zoo](http://talk.galaxyzoo.org/#/collections/CGZL00003q))
 contain a lot of "morphological" information that is currently not being
 extracted and used. This is because fitting very flexible yet physically
 meangful models to high signal to noise ratio data of complex galaxies is
