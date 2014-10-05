@@ -33,7 +33,11 @@
 	  guiContainer.appendChild(gui.domElement);
 
 	  gui.add(text, 'message');
-	  gui.add(text, 'speed', -5, 5);
+	  var guiSpeed = gui.add(text, 'speed', -5, 5).listen();
+    guiSpeed.onChange(function(value){
+      console.log(value);
+    });
+
 	  gui.add(text, 'displayOutline');
 	};
 
