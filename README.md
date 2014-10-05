@@ -23,6 +23,10 @@ with a crafted model, via a big red "optimize" button.
 
 ### [Demo](http://drphilmarshall.github.io/GalaxyCraft/)
 
+* Textured galaxy model suggested by [Groeneboom & Dahle (2014)](https://github.com/drphilmarshall/GalaxyCraft/raw/master/doc/litter/GAMER_Groeneboom%2BDahle2014.pdf)
+* Galaxy ray-tracing devloped at [Shadertoy](https://www.shadertoy.com/view/4dSSWm) and [jsfiddle](jsfiddle.net)
+
+
 ### Contributors:
 
 * Phil Marshall
