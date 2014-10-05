@@ -38,6 +38,276 @@
 	};
 
     </script>
+<script src="http://threejs.org/build/three.min.js"></script>
+
+<script id="vertex_shader" type="x-shader/x-vertex">
+
+#define NVERTS 4
+
+varying vec3 vNormal;
+varying vec3 vViewPosition;
+
+void main() {
+
+  vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+  vNormal = normalize( normalMatrix * normal );
+
+  vViewPosition = -mvPosition.xyz;
+
+  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+}
+
+</script>
+
+<script id="fragment_shader" type="x-shader/x-fragment">
+
+uniform vec3 color;
+
+uniform vec3 iResolution;
+uniform vec4 iMouse;
+uniform float iGlobalTime;
+
+varying vec3 vNormal;       // in camera space
+varying vec3 vViewPosition;     // in camera space
+    // ==============================================================
+    vec3 saturate(vec3 a)
+{
+  return clamp(a, 0.0, 1.0);
+}
+vec2 saturate(vec2 a)
+{
+  return clamp(a, 0.0, 1.0);
+}
+float saturate(float a)
+{
+  return clamp(a, 0.0, 1.0);
+}
+
+    // otavio's noise functions
+float Hash2d(vec2 uv)
+{
+    float f = uv.x + uv.y * 37.0;
+    return fract(sin(f)*104003.9);
+}
+float Hash3d(vec3 uv)
+{
+    float f = uv.x + uv.y * 37.0 + uv.z * 521.0;
+    return fract(sin(f)*110003.9);
+}
+float mixP(float f0, float f1, float a)
+{
+    return mix(f0, f1, a*a*(3.0-2.0*a));
+}
+const vec2 zeroOne = vec2(0.0, 1.0);
+float noise2d(vec2 uv)
+{
+    vec2 fr = fract(uv.xy);
+    vec2 fl = floor(uv.xy);
+    float h00 = Hash2d(fl);
+    float h10 = Hash2d(fl + zeroOne.yx);
+    float h01 = Hash2d(fl + zeroOne);
+    float h11 = Hash2d(fl + zeroOne.yy);
+    return mixP(mixP(h00, h10, fr.x), mixP(h01, h11, fr.x), fr.y);
+}
+float noise(vec3 uv)
+{
+    vec3 fr = fract(uv.xyz);
+    vec3 fl = floor(uv.xyz);
+    float h000 = Hash3d(fl);
+    float h100 = Hash3d(fl + zeroOne.yxx);
+    float h010 = Hash3d(fl + zeroOne.xyx);
+    float h110 = Hash3d(fl + zeroOne.yyx);
+    float h001 = Hash3d(fl + zeroOne.xxy);
+    float h101 = Hash3d(fl + zeroOne.yxy);
+    float h011 = Hash3d(fl + zeroOne.xyy);
+    float h111 = Hash3d(fl + zeroOne.yyy);
+    return mixP(
+        mixP(mixP(h000, h100, fr.x),
+             mixP(h010, h110, fr.x), fr.y),
+        mixP(mixP(h001, h101, fr.x),
+             mixP(h011, h111, fr.x), fr.y)
+        , fr.z);
+}
+
+float PI=3.14159265;
+
+vec3 normal;
+
+vec3 RotateX(vec3 v, float rad)
+{
+  float cos = cos(rad);
+  float sin = sin(rad);
+  //if (RIGHT_HANDED_COORD)
+  return vec3(v.x, cos * v.y + sin * v.z, -sin * v.y + cos * v.z);
+  //else return new float3(x, cos * y - sin * z, sin * y + cos * z);
+}
+vec3 RotateY(vec3 v, float rad)
+{
+  float cos = cos(rad);
+  float sin = sin(rad);
+  //if (RIGHT_HANDED_COORD)
+  return vec3(cos * v.x - sin * v.z, v.y, sin * v.x + cos * v.z);
+  //else return new float3(cos * x + sin * z, y, -sin * x + cos * z);
+}
+vec3 RotateZ(vec3 v, float rad)
+{
+  float cos = cos(rad);
+  float sin = sin(rad);
+  //if (RIGHT_HANDED_COORD)
+  return vec3(cos * v.x + sin * v.y, -sin * v.x + cos * v.y, v.z);
+}
+
+
+float sdTorus( vec3 p, vec2 t )
+{
+  vec2 q = vec2(length(p.xz)-t.x,p.y);
+  return length(q)-t.y;
+}
+
+float udBox( vec3 p, vec3 b )
+{
+  return length(max(abs(p)-b,0.0));
+}
+
+float DistanceToObject(vec3 p)
+{
+  float final;
+    final = length(p) - 1.0;
+    final = sdTorus(p, vec2(1.5, 0.0005));
+    final = min(final, udBox(p, vec3(1.5, 0.00025, 0.00025)));
+    final = min(final, udBox(p + vec3(0.0,0.0,1.5), vec3(1.5, 0.00025, 0.00025)));
+    return final;
+}
+
+vec3 DensityBulge(vec3 p, inout float coverage)
+{
+    p.y *= 2.0;
+    float len = length(p)*0.25;
+    //return exp(-pow(len, 0.25));
+    vec3 final = 0.0001*vec3(14.0, 8.0, 6.0) / abs(len*len*len);
+    return (final) * coverage;
+}
+
+vec3 DensitySpiralArms(vec3 p, inout float coverage)
+{
+    p.y *= 4.0;
+    p.x *= 1.7;
+    float len = length(p)*0.5;
+    float at = atan(p.x, p.z);
+    at += len*4.0;
+    float dense = saturate(1.0 - pow(abs(len), 0.1));
+    dense *= noise(p*4.0);
+    vec3 final = vec3(14.0, 13.0, 10.0)*100.0* dense;
+    float arm = saturate(sin(at*2.0)*0.25-0.09);
+    final *= pow(arm, 2.5);
+    //return exp(-pow(len, 0.25));
+    return (final) * coverage * vec3(0.1, 0.4, 1.0);
+}
+
+vec3 DensityDust(vec3 p, inout float coverage)
+{
+    p.y *= 17.5;
+    p.x *= 0.75;
+    p.z *= 0.75;
+    float len = length(p)*0.5;
+    float at = atan(p.x, p.z);
+    float dense = saturate(1.0 - pow(abs(len), 0.05));
+    dense *= noise(p*3.0);
+    dense = saturate(dense * 8.0);
+    coverage *= 1.0 - dense;
+    return vec3(1.0, 0.5, 0.2)*0.01 * dense;
+}
+
+void main(void)
+{
+  // ---------------- First, set up the camera rays for ray marching ----------------
+  vec2 uv = gl_FragCoord.xy/iResolution.xy * 2.0 - 1.0;
+   // uv.x -= 0.6;
+    //uv.y -= 0.6;
+
+  // Camera up vector.
+  vec3 camUp=vec3(0,1,0); // vuv
+
+  // Camera lookat.
+  vec3 camLookat=vec3(0,0.0,0); // vrp
+
+  float mx=-iMouse.x/iResolution.x*PI*2.5 + iGlobalTime * 0.5;
+  float my=-(iMouse.y/iResolution.y*PI-(PI*0.5));// + sin(iGlobalTime * 0.3)*0.2+0.2;//*PI/2.01;
+  vec3 camPos=vec3(cos(my)*cos(mx),sin(my),cos(my)*sin(mx))*(3.2);  // prp
+  //vec3 camPos=vec3(cos(my),sin(my),cos(my))*(3.2);  // prp
+
+  // Camera setup.
+  vec3 camVec=normalize(camLookat - camPos);//vpn
+  vec3 sideNorm=normalize(cross(camUp, camVec));  // u
+  vec3 upNorm=cross(camVec, sideNorm);//v
+  vec3 worldFacing=(camPos + camVec);//vcv
+    float zoom = 0.75;
+  vec3 worldPix = worldFacing + uv.x * sideNorm * zoom * (iResolution.x/iResolution.y) + uv.y * upNorm * zoom;//scrCoord
+  vec3 relVec = normalize(worldPix - camPos);//scp
+
+  // --------------------------------------------------------------------------------
+  float dist = 0.2;
+  float t = 1.0;
+  float inc = 0.02;
+  float maxDepth = 10.0;
+  vec3 pos = vec3(0,0,0);
+    vec3 accum = vec3(0.0);
+    float coverage = 1.0;
+    //float lastDensity = 0.0;
+    //vec3 lastPos = vec3(0.0, 0.0, 0.0);
+  // ray marching time
+  //if (hit > 0.5)  // check if inside bounding sphere before wasting time ray marching.
+  {
+    for (int i = 0; i < 210; i++) // This is the count of how many times the ray actually marches.
+    {
+      if ((t > maxDepth) || (dist < 0.01)) break; // break DOESN'T WORK!!! ARRRGGG!
+      pos = camPos + relVec * t;
+      // *******************************************************
+      // This is _the_ function that defines the "distance field".
+      // It's really what makes the scene geometry.
+      // *******************************************************
+      //dist = DistanceToObject(pos);
+
+            vec3 density = DensityBulge(pos, coverage);
+            density += DensitySpiralArms(pos, coverage);
+            density += DensityDust(pos, coverage);
+            //float currentCoverage = exp(-pow(distance(lastPos, pos) * min(density, lastDensity), 1.0));
+    inc = 0.2;//min(dist,0.2);
+            accum.xyz +=density.xyz*inc;// currentCoverage;
+
+      t += inc;
+        }
+  }
+
+    // --------------------------------------------------------------------------------
+  // Now that we have done our ray marching, let's put some color on this geometry.
+
+  vec3 finalColor = vec3(0.0);
+
+  // If a ray actually hit the object, let's light it.
+    if (dist < 0.01)
+  {
+        // calculate the normal from the distance field. The distance field is a volume, so if you
+        // sample the current point and neighboring points, you can use the difference to get
+        // the normal.
+        vec3 smallVec = vec3(0.02, 0, 0);
+        vec3 normal = vec3(dist - DistanceToObject(pos - smallVec.xyy),
+                           dist - DistanceToObject(pos - smallVec.yxy),
+                           dist - DistanceToObject(pos - smallVec.yyx));
+        float normLen = length(normal);
+        normal = normalize(normal);
+    finalColor = normal * 0.5 + 0.5;
+  }
+    finalColor += vec3(1.0) * accum.xyz;// mix(finalColor, vec3(0.9,0.95,1.0), accum);
+
+    gl_FragColor = vec4(sqrt(clamp(finalColor*1.0, 0.0, 1.0)),1.0);
+}
+
+
+</script>
+
   </head>
   <body>
       <div id="header">
@@ -72,7 +342,9 @@
 	 </td>
 	 <td style="width:45%">
 	  <!-- Placeholder static image! -->
-      <img src="images/shadertoy_screengrab.png" style="width-max:450px" />
+    <div id="coolGalaxyBox">
+      <!--<img src="images/shadertoy_screengrab.png" style="width-max:450px" />-->
+      </div>
 	 </td>
 	 <td style="width:15%; vertical-align:text-top;">
 	  <div id="gui-container"></div>
@@ -87,6 +359,7 @@
 
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+        <script type="text/javascript" src="javascripts/galaxycraft.js"></script>
+
   </body>
 </html>
