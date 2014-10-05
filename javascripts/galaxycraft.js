@@ -3,8 +3,8 @@ var material, mesh, uniforms, attributes;
 var mouseX = 100,
     mouseY = 100,
     mouseWheel = 1.0;
-var winWidth = 400;
-var winHeight = 400;
+var winWidth = 424;
+var winHeight = 424;
 
 init();
 animate();
@@ -23,7 +23,7 @@ function init() {
 	// camera
 //var camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
     camera = new THREE.PerspectiveCamera( 40, winWidth / winHeight, 1, 1000 );
-	camera.position.set( 0, 0, 60 );
+	camera.position.set( 0, 0, 55 );
 
 	// axes
 	//scene.add( new THREE.AxisHelper( 20 ) );
@@ -48,14 +48,14 @@ function init() {
 		vertexShader    : document.getElementById( 'vertex_shader' ).textContent,
 		fragmentShader  : document.getElementById( 'fragment_shader' ).textContent
 	} );
-    
+
 	// plane geometry
 	var geometry = new THREE.PlaneGeometry( 40, 40 );
 
 	// plane
 	mesh = new THREE.Mesh( geometry, material );
 	scene.add( mesh );
-    
+
     document.addEventListener('mousemove', onMouseMove, false);
     document.addEventListener('mousedown', onMouseDown, false);
     document.addEventListener('mouseup', onMouseUp, false);
