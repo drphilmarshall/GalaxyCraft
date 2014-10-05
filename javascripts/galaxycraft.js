@@ -56,7 +56,9 @@ function init() {
 	mesh = new THREE.Mesh( geometry, material );
 	scene.add( mesh );
     
-        document.addEventListener('mousemove', onMouseMove, false);
+    document.addEventListener('mousemove', onMouseMove, false);
+    document.addEventListener('mousedown', onMouseDown, false);
+    document.addEventListener('mouseup', onMouseUp, false);
     document.addEventListener('mousewheel', onMouseWheel, false);
     clock = new THREE.Clock();
 
@@ -79,11 +81,13 @@ function animate() {
 
 }
 
+var mouseIsDown = false;
 //event listener
 function onMouseDown(event_info) {
     //stop any other event listener from recieving this event
     event_info.preventDefault();
 
+    mouseIsDown = true;
     //this where begin to transform the mouse cordinates to three,js cordinates
     mouseX = (event_info.clientX / winWidth) * 2 - 1;
     mouseY = -(event_info.clientY / winHeight) * 2 + 1;
@@ -92,13 +96,16 @@ function onMouseDown(event_info) {
 function onMouseMove(event_info) {
     //stop any other event listener from recieving this event
     event_info.preventDefault();
-    //this where begin to transform the mouse cordinates to three,js cordinates
-    mouseX = (event_info.clientX / winWidth) * 2 - 1;
-    mouseY = -(event_info.clientY / winHeight) * 2 + 1;
+    if (mouseIsDown)
+    {
+	    //this where begin to transform the mouse cordinates to three,js cordinates
+	    mouseX = (event_info.clientX / winWidth) * 2 - 1;
+	    mouseY = -(event_info.clientY / winHeight) * 2 + 1;
+	}
 }
 
 function onMouseUp(event_info) {
-
+	mouseIsDown = false;
 
 }
 
