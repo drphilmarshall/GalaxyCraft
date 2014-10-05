@@ -59,10 +59,10 @@ function init() {
 	mesh = new THREE.Mesh( geometry, material );
 	scene.add( mesh );
 
-    document.addEventListener('mousemove', onMouseMove, false);
-    document.addEventListener('mousedown', onMouseDown, false);
-    document.addEventListener('mouseup', onMouseUp, false);
-    document.addEventListener('mousewheel', onMouseWheel, false);
+    document.getElementById('coolGalaxyBox').addEventListener('mousemove', onMouseMove, false);
+    document.getElementById('coolGalaxyBox').addEventListener('mousedown', onMouseDown, false);
+    document.getElementById('coolGalaxyBox').addEventListener('mouseup', onMouseUp, false);
+    document.getElementById('coolGalaxyBox').addEventListener('mousewheel', onMouseWheel, false);
     clock = new THREE.Clock();
 
 }
