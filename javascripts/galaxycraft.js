@@ -34,6 +34,8 @@ function init() {
 
 		iResolution: { type: "v3", value: new THREE.Vector3(500.0,400.0, 0.0) },
 		iGlobalTime: { type: "f", value: 1.0 },
+		spiralyness: { type: "f", value: 1.0 },
+		bulgeSize: { type: "f", value: 1.0 },
 		iMouse: { type: "v4", value: new THREE.Vector4(5.0,40.0, 0.0, 0.0) },
 	};
 
@@ -72,6 +74,9 @@ function animate() {
     //uniforms.cameraPos.value = camera.position;
     //uniforms.iGlobalTime.needsUpdate = true; // doesn't seem to be needed.?
     uniforms.iMouse.value = new THREE.Vector4(mouseX*400.01,mouseY*400.01, 400.0);
+    uniforms.bulgeSize.value = Math.sin(time);
+    uniforms.spiralyness.value = Math.sin(time);
+    uniforms.spiralyness.needsUpdate;
     uniforms.iMouse.needsUpdate;
     uniforms.needsUpdate = true;
 

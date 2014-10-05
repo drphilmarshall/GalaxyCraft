@@ -68,6 +68,8 @@ uniform vec3 color;
 uniform vec3 iResolution;
 uniform vec4 iMouse;
 uniform float iGlobalTime;
+uniform float spiralyness;
+uniform float bulgeSize;
 
 varying vec3 vNormal;       // in camera space
 varying vec3 vViewPosition;     // in camera space
@@ -184,7 +186,7 @@ float DistanceToObject(vec3 p)
 vec3 DensityBulge(vec3 p, inout float coverage)
 {
     p.y *= 2.0;
-    float len = length(p)*0.25;
+    float len = length(p) * bulgeSize * 2.0;
     //return exp(-pow(len, 0.25));
     vec3 final = 0.0001*vec3(14.0, 8.0, 6.0) / abs(len*len*len);
     return (final) * coverage;
@@ -196,7 +198,7 @@ vec3 DensitySpiralArms(vec3 p, inout float coverage)
     p.x *= 1.7;
     float len = length(p)*0.5;
     float at = atan(p.x, p.z);
-    at += len*4.0;
+    at += len*8.0*spiralyness;
     float dense = saturate(1.0 - pow(abs(len), 0.1));
     dense *= noise(p*4.0);
     vec3 final = vec3(14.0, 13.0, 10.0)*100.0* dense;
