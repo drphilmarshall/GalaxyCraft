@@ -76,8 +76,8 @@ function animate() {
     //uniforms.iGlobalTime.needsUpdate = true; // doesn't seem to be needed.?
     uniforms.iMouse.value = new THREE.Vector4(mouseX*400.01,mouseY*400.01, 400.0);
     //uniforms.squish.value = Math.sin(time)*0.5+0.6;
-    uniforms.bulgeSize.value = Math.sin(time);
-    uniforms.spiralyness.value = Math.sin(time);
+    //uniforms.bulgeSize.value = Math.sin(time);
+    // uniforms.spiralyness.value = Math.sin(time);
     uniforms.spiralyness.needsUpdate;
     uniforms.iMouse.needsUpdate;
     uniforms.needsUpdate = true;

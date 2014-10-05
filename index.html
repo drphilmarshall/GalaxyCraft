@@ -21,7 +21,8 @@
 
 	var GalaxyControl = function() {
 	  this.message = 'something';
-	  this.speed = 0.8;
+    this.bulgeSize = 0.5;
+	  this.spiralyness = 0.5;
 	  this.displayOutline = false;
 	};
 
@@ -33,9 +34,15 @@
 	  guiContainer.appendChild(gui.domElement);
 
 	  gui.add(text, 'message');
-	  var guiSpeed = gui.add(text, 'speed', -5, 5).listen();
-    guiSpeed.onChange(function(value){
-      console.log(value);
+
+    var guiBulgeSize = gui.add(text, 'bulgeSize', 0, 1).listen();
+    guiBulgeSize.onChange(function(value){
+      uniforms.bulgeSize.value = value;
+    });
+
+    var guiSpiralyness = gui.add(text, 'spiralyness', -1, 1).listen();
+    guiSpiralyness.onChange(function(value){
+      uniforms.spiralyness.value = value;
     });
 
 	  gui.add(text, 'displayOutline');
