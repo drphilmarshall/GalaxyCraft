@@ -29,8 +29,8 @@ with a crafted model, via a big red "optimize" button.
 
 ### Contributors:
 
-* Phil Marshall
 * Otavio Good
+* Phil Marshall
 * Carl Gorringe
 
 Science Hack Day, San Francisco, 2014.
