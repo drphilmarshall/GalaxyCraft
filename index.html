@@ -70,6 +70,7 @@ uniform vec4 iMouse;
 uniform float iGlobalTime;
 uniform float spiralyness;
 uniform float bulgeSize;
+uniform float squish;
 
 varying vec3 vNormal;       // in camera space
 varying vec3 vViewPosition;     // in camera space
@@ -195,8 +196,8 @@ vec3 DensityBulge(vec3 p, inout float coverage)
 vec3 DensitySpiralArms(vec3 p, inout float coverage)
 {
     p.y *= 4.0;
-    p.x *= 1.7;
-    float len = length(p)*0.5;
+    //p.x *= squish;//1.7;
+    float len = length(p * vec3(squish, 1.0,1.0))*0.5;
     float at = atan(p.x, p.z);
     at += len*8.0*spiralyness;
     float dense = saturate(1.0 - pow(abs(len), 0.1));

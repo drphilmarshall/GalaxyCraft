@@ -36,6 +36,7 @@ function init() {
 		iGlobalTime: { type: "f", value: 1.0 },
 		spiralyness: { type: "f", value: 1.0 },
 		bulgeSize: { type: "f", value: 1.0 },
+		squish: { type: "f", value: 1.0 },
 		iMouse: { type: "v4", value: new THREE.Vector4(5.0,40.0, 0.0, 0.0) },
 	};
 
@@ -74,6 +75,7 @@ function animate() {
     //uniforms.cameraPos.value = camera.position;
     //uniforms.iGlobalTime.needsUpdate = true; // doesn't seem to be needed.?
     uniforms.iMouse.value = new THREE.Vector4(mouseX*400.01,mouseY*400.01, 400.0);
+    //uniforms.squish.value = Math.sin(time)*0.5+0.6;
     uniforms.bulgeSize.value = Math.sin(time);
     uniforms.spiralyness.value = Math.sin(time);
     uniforms.spiralyness.needsUpdate;
