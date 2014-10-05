@@ -3,10 +3,10 @@ GalaxyCraft
 
 Well-resolved images of galaxies (like
 [these](http://talk.galaxyzoo.org/#/collections/CGZL00003q) from Galaxy Zoo)
-contain a lot of "morphological" information:  that is currently not being
+contain a lot of "morphological" information that is currently not being
 extracted and used. This is because fitting very flexible yet physically
 meangful models to high signal to noise ratio data of complex galaxies is
-hard. We'd like to advance astronomy by enabling a lot of *new galaxy
+hard! We'd like to advance astronomy by enabling a lot of *new galaxy
 astrophysics parameters* - such as the spiral arm winding tightness, star
 formation clumpiness, dust texture, and so on - to be inferred from our
 beautiful data.
